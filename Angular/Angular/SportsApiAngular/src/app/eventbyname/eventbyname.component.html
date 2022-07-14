@@ -1,0 +1,34 @@
+<br>
+<div class="container">
+    <h1 class="text-primary"> View Event By Name</h1>
+    <br>
+    <label>Event Name</label>
+
+    <input type="text" class="form-control"  [(ngModel)]="id"/><br>
+    <button class="btn btn-primary"   (click)="onClick()">Search Event</button><br>
+
+    <hr style="color: rgb(110, 178, 221);border: 2px solid rgb(113, 188, 234);">
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Event Id</th>
+            <th>Event Date</th>
+            <th>Event Name</th>
+            <th>No of Slots</th>
+            <th>Sports Name</th>
+            
+        </tr>
+
+        <tr >
+            <td>{{event.eventId}}</td>
+            <td>{{event.eventDate}}</td>
+            <td>{{event.eventName}}</td>
+            <td>{{event.noofSlots}}</td>
+            <td>{{event.sportsName}}</td>
+            
+        </tr>
+    </table>
+    <hr style="color: rgb(110, 178, 221);border: 2px solid rgb(110, 178, 221);">
+
+    <button class="btn btn-primary" (click)="onCancel()">Cancel</button>
+</div>
+

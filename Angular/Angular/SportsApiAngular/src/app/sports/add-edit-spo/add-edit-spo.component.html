@@ -1,0 +1,26 @@
+<div class="form-froup row">
+    <label class="col-sm-2 col-form-label">Sports Id</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" [(ngModel)]="sportsId" placeholder="Enter SportsId">
+    </div>
+    <label class="col-sm-2 col-form-label">No Of Players</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" [(ngModel)]="noOfPlayers" placeholder="Enter No Of Players">
+    </div>
+    <label class="col-sm-2 col-form-label">Sports Name</label>
+    <div class="col-sm-10">
+        <input type="text" pattern="[A-Za-z]" title="Enter only aplhabets" class="form-control" [(ngModel)]="sportsName" placeholder="Enter Sports Name">
+    </div>
+    <label class="col-sm-2 col-form-label">Sports Type</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" [(ngModel)]="sportsType" placeholder="Enter Sports Type">
+    </div>
+</div>
+
+<button (click)="addSports()" *ngIf="spo.sportsId==0" class="btn btn-primary">
+    Add
+</button>
+
+<!-- <button (click)="updateSports()" *ngIf="spo.sportsId!=0" class="btn btn-primary">
+    Update
+</button> -->

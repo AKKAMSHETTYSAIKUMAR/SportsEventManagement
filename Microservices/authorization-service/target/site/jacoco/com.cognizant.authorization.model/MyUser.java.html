@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyUser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">authorization-service</a> &gt; <a href="index.source.html" class="el_package">com.cognizant.authorization.model</a> &gt; <span class="el_source">MyUser.java</span></div><h1>MyUser.java</h1><pre class="source lang-java linenums">package com.cognizant.authorization.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import lombok.Data;
+import lombok.ToString;
+
+/**
+ * This is a model class which is used as a table using Spring Data
+ * JPA's @Entity Annotations. It contains fields like UserId, Password and
+ * UserName.
+ */
+@Data
+@ToString
+@Entity(name = &quot;user&quot;)
+public class MyUser {
+	
+
+	public String getUserid() {
+<span class="nc" id="L22">		return userid;</span>
+	}
+
+	public void setUserid(String userid) {
+<span class="nc" id="L26">		this.userid = userid;</span>
+<span class="nc" id="L27">	}</span>
+
+	public String getPassword() {
+<span class="nc" id="L30">		return password;</span>
+	}
+
+	public void setPassword(String password) {
+<span class="nc" id="L34">		this.password = password;</span>
+<span class="nc" id="L35">	}</span>
+
+	public String getUsername() {
+<span class="nc" id="L38">		return username;</span>
+	}
+
+	public void setUsername(String username) {
+<span class="nc" id="L42">		this.username = username;</span>
+<span class="nc" id="L43">	}</span>
+
+	public MyUser() {
+<span class="nc" id="L46">		super();</span>
+		// TODO Auto-generated constructor stub
+<span class="nc" id="L48">	}</span>
+	
+
+	public MyUser(String userid, String password, String username) {
+<span class="nc" id="L52">		super();</span>
+<span class="nc" id="L53">		this.userid = userid;</span>
+<span class="nc" id="L54">		this.password = password;</span>
+<span class="nc" id="L55">		this.username = username;</span>
+<span class="nc" id="L56">	}</span>
+
+
+	@Id
+	@Column(name = &quot;userid&quot;, length = 20)
+	private String userid;
+
+	@Column(name = &quot;password&quot;, length = 20)
+	private String password;
+
+	@Column(name = &quot;username&quot;, length = 20)
+	private String username;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

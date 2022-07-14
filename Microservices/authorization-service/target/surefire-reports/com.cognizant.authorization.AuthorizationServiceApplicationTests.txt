@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: com.cognizant.authorization.AuthorizationServiceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 12.091 s <<< FAILURE! - in com.cognizant.authorization.AuthorizationServiceApplicationTests
+main  Time elapsed: 12.072 s  <<< ERROR!
+org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.PortInUseException: Port 8080 is already in use
+	at com.cognizant.authorization.AuthorizationServiceApplicationTests.main(AuthorizationServiceApplicationTests.java:14)
+Caused by: org.springframework.boot.web.server.PortInUseException: Port 8080 is already in use
+	at com.cognizant.authorization.AuthorizationServiceApplicationTests.main(AuthorizationServiceApplicationTests.java:14)
+Caused by: java.lang.IllegalArgumentException: standardService.connector.startFailed
+	at com.cognizant.authorization.AuthorizationServiceApplicationTests.main(AuthorizationServiceApplicationTests.java:14)
+Caused by: org.apache.catalina.LifecycleException: Protocol handler start failed
+	at com.cognizant.authorization.AuthorizationServiceApplicationTests.main(AuthorizationServiceApplicationTests.java:14)
+Caused by: java.net.BindException: Address already in use: bind
+	at com.cognizant.authorization.AuthorizationServiceApplicationTests.main(AuthorizationServiceApplicationTests.java:14)
+

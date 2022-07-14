@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">authorization-service</a> &gt; <a href="index.source.html" class="el_package">com.cognizant.authorization.service</a> &gt; <span class="el_source">JwtUtil.java</span></div><h1>JwtUtil.java</h1><pre class="source lang-java linenums">package com.cognizant.authorization.service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import com.cognizant.authorization.AuthorizationServiceApplication;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+/**
+ * This is a Utility class which is used to carry out token related operations
+ * like creating tokens, checking for validation, setting time limit of a token
+ * etc.
+ *
+ */
+
+
+@Service
+<span class="nc" id="L28">public class JwtUtil {</span>
+	
+<span class="nc" id="L30">	private static final Logger log = LoggerFactory.getLogger(AuthorizationServiceApplication.class);</span>
+
+<span class="nc" id="L32">	private String secretkey = &quot;sampletest&quot;;</span>
+	
+
+	public String extractUsername(String token) {
+<span class="nc" id="L36">		log.info(&quot;START&quot;);</span>
+<span class="nc" id="L37">		log.debug(&quot;TOKEN {}:&quot;, token);</span>
+<span class="nc" id="L38">		String extractClaim = extractClaim(token, Claims::getSubject);</span>
+<span class="nc" id="L39">		log.debug(&quot;EXTRACT CLAIM {}:&quot;, extractClaim);</span>
+<span class="nc" id="L40">		log.info(&quot;END&quot;);</span>
+<span class="nc" id="L41">		return extractClaim;</span>
+	}
+
+	/**
+	 * Extracts the Expiry date from the token using getExpiration from Claims
+	 * 
+	 * @param token
+	 * @return the expiry date of token
+	 */
+
+	public Date extractExpiration(String token) {
+<span class="nc" id="L52">		log.info(&quot;START&quot;);</span>
+<span class="nc" id="L53">		log.debug(&quot;TOKEN {}:&quot;, token);</span>
+<span class="nc" id="L54">		Date expiryDate = extractClaim(token, Claims::getExpiration);</span>
+<span class="nc" id="L55">		log.debug(&quot;EXPIRY DATE {}:&quot;, expiryDate);</span>
+<span class="nc" id="L56">		log.info(&quot;END&quot;);</span>
+<span class="nc" id="L57">		return expiryDate;</span>
+
+	}
+
+	public &lt;T&gt; T extractClaim(String token, Function&lt;Claims, T&gt; claimsResolver) {
+<span class="nc" id="L62">		log.info(&quot;START&quot;);</span>
+<span class="nc" id="L63">		log.debug(&quot;TOKEN {}:&quot;, token);</span>
+<span class="nc" id="L64">		log.debug(&quot;CLAIMS RESOLVER {}:&quot;, claimsResolver);</span>
+<span class="nc" id="L65">		final Claims claims = extractAllClaims(token);</span>
+<span class="nc" id="L66">		log.debug(&quot;CLAIMS {}:&quot;, claims);</span>
+<span class="nc" id="L67">		T apply = claimsResolver.apply(claims);</span>
+<span class="nc" id="L68">		log.debug(&quot;APPLY {}:&quot;, apply);</span>
+<span class="nc" id="L69">		log.info(&quot;END&quot;);</span>
+<span class="nc" id="L70">		return apply;</span>
+	}
+
+	private Claims extractAllClaims(String token) {
+<span class="nc" id="L74">		log.info(&quot;START&quot;);</span>
+<span class="nc" id="L75">		log.debug(&quot;TOKEN {}:&quot;, token);</span>
+<span class="nc" id="L76">		Claims claims = Jwts.parser().setSigningKey(secretkey).parseClaimsJws(token).getBody();</span>
+<span class="nc" id="L77">		log.debug(&quot;CLAIMS {}:&quot;, claims);</span>
+<span class="nc" id="L78">		log.info(&quot;END&quot;);</span>
+<span class="nc" id="L79">		return claims;</span>
+	}
+
+	private Boolean isTokenExpired(String token) {
+<span class="nc" id="L83">		log.info(&quot;START&quot;);</span>
+<span class="nc" id="L84">		log.debug(&quot;TOKEN {}:&quot;, token);</span>
+<span class="nc" id="L85">		boolean isTokenExpired = extractExpiration(token).before(new Date());</span>
+<span class="nc" id="L86">		log.debug(&quot;CHECK TOKEN EXPIRATION {}:&quot;, isTokenExpired);</span>
+<span class="nc" id="L87">		log.info(&quot;END&quot;);</span>
+<span class="nc" id="L88">		return isTokenExpired;</span>
+	}
+
+	/**
+	 * Define claims of the token, like Issuer, Expiration, Subject, and the ID
+	 * 
+	 * @param userDetails
+	 * @return
+	 */
+	public String generateToken(UserDetails userDetails) {
+<span class="nc" id="L98">		log.info(&quot;START&quot;);</span>
+<span class="nc" id="L99">		log.debug(&quot;USER DETAILS {}:&quot;, userDetails);</span>
+<span class="nc" id="L100">		Map&lt;String, Object&gt; claims = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L101">		log.debug(&quot;CLAIMS {}:&quot;, claims);</span>
+<span class="nc" id="L102">		String createToken = createToken(claims, userDetails.getUsername());</span>
+<span class="nc" id="L103">		log.debug(&quot;CREATE TOKEN {}:&quot;, createToken);</span>
+<span class="nc" id="L104">		log.info(&quot;END&quot;);</span>
+<span class="nc" id="L105">		return createToken;</span>
+	}
+
+	/**
+	 * Token is generated for 30 mins The signature is used to verify the message
+	 * wasn't changed along the way
+	 * 
+	 * @return Token
+	 **/
+	private String createToken(Map&lt;String, Object&gt; claims, String subject) {
+<span class="nc" id="L115">		log.info(&quot;START&quot;);</span>
+<span class="nc" id="L116">		log.debug(&quot;CLAIMS {}:&quot;, claims);</span>
+<span class="nc" id="L117">		log.debug(&quot;SUBJECT {}:&quot;, subject);</span>
+<span class="nc" id="L118">		String token = Jwts.builder().setClaims(claims).setSubject(subject)</span>
+<span class="nc" id="L119">				.setIssuedAt(new Date(System.currentTimeMillis()))</span>
+<span class="nc" id="L120">				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))// token for 30 mins</span>
+<span class="nc" id="L121">				.signWith(SignatureAlgorithm.HS256, secretkey).compact();</span>
+<span class="nc" id="L122">		log.debug(&quot;TOKEN {}:&quot;, token);</span>
+<span class="nc" id="L123">		log.info(&quot;END&quot;);</span>
+<span class="nc" id="L124">		return token;</span>
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param token
+	 * @param userDetails
+	 * @return whether the token is from valid user and is not expired
+	 */
+
+	public Boolean validateToken(String token, UserDetails userDetails) {
+<span class="nc" id="L136">		log.info(&quot;START&quot;);</span>
+<span class="nc" id="L137">		log.debug(&quot;TOKEN {}:&quot;, token);</span>
+<span class="nc" id="L138">		log.debug(&quot;USER DETAILS {}:&quot;, userDetails);</span>
+<span class="nc" id="L139">		final String username = extractUsername(token);</span>
+<span class="nc" id="L140">		log.debug(&quot;USERNAME{}:&quot;, username);</span>
+<span class="nc" id="L141">		log.info(&quot;END&quot;);</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">		return (username.equals(userDetails.getUsername()) &amp;&amp; !isTokenExpired(token));</span>
+	}
+
+	/**
+	 * @param token
+	 * @return whether token is not valid
+	 */
+
+	public Boolean validateToken(String token) {
+<span class="nc" id="L151">		log.info(&quot;START&quot;);</span>
+<span class="nc" id="L152">		log.debug(&quot;TOKEN {}:&quot;, token);</span>
+<span class="nc" id="L153">		log.info(&quot;START&quot;);</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		return !isTokenExpired(token);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
